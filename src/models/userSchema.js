@@ -1,53 +1,34 @@
-const mongoose = require('mongoose');
+// src/models/UserSchema.js
+const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const UserSchema = new Schema(
   {
-    fullName: {
+    user_id: {
+      type: String,
+      required: true,
+      unique: true, // Clerk's user ID
+    },
+    name: {
       type: String,
       required: true,
       trim: true,
-      minlength: 2,
-      maxlength: 80,
+      maxlength: 100,
     },
     email: {
       type: String,
       required: true,
-      unique: true,
-      lowercase: true,
+      unique: true, // ensures only 1 account per email
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Invalid email'],
+      lowercase: true,
     },
-    clerkId: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-
     balance: {
       type: Number,
-      required: true,
-      default: 1500,
+      default: 1000,
       min: 0,
     },
-
-    currency: {
-      type: String,
-      enum: ['INR'],
-      default: 'INR',
-    },
-
-    role: {
-      type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
-      index: true,
-    },
   },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
+  { timestamps: true, versionKey: false }
 );
 
-module.exports = mongoose.models.User || model('User', UserSchema);
+module.exports = mongoose.models.User || model("User", UserSchema);
