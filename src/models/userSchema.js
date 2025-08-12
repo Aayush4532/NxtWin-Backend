@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const UserSchema = new Schema(
@@ -16,7 +16,7 @@ const UserSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Invalid email'],
+      match: [/^\S+@\S+\.\S+$/, "Invalid email"],
     },
     clerkId: {
       type: String,
@@ -33,16 +33,26 @@ const UserSchema = new Schema(
 
     currency: {
       type: String,
-      enum: ['INR'],
-      default: 'INR',
+      enum: ["INR"],
+      default: "INR",
     },
 
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
+      enum: ["user", "admin"],
+      default: "user",
       index: true,
     },
+    bidsHistory: [
+      {
+        bidId: { type: Schema.Types.ObjectId, ref: "Bid" },
+        orderId: { type: Schema.Types.ObjectId, ref: "Order" },
+        price: Number,
+        quantity: Number,
+        type: String,
+        timestamp: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -50,4 +60,4 @@ const UserSchema = new Schema(
   }
 );
 
-module.exports = mongoose.models.User || model('User', UserSchema);
+module.exports = mongoose.models.User || model("User", UserSchema);
